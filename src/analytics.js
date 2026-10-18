@@ -4,7 +4,7 @@
 // 1. Sign up at goatcounter.com and pick a code (e.g. "purrmodoro")
 // 2. Put that code below, commit, push. Done!
 
-const GOATCOUNTER_CODE = '' // <-- your code here, e.g. 'purrmodoro'
+const GOATCOUNTER_CODE = 'paimanh' // <-- your code here, e.g. 'purrmodoro'
 
 export function initAnalytics() {
   if (!GOATCOUNTER_CODE) return
