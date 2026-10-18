@@ -78,13 +78,21 @@ const CAT_SVG = /* html */ `
 const CHEERS = [
   'you got this!',
   'so focused~',
-  'proud of u 💗',
+  'proud of u',
   'meow! (keep going)',
   '*happy tail swish*',
   'one paw at a time',
   'ur doing amazing',
-  'focus mode: ON 😼',
+  'focus mode: ON',
 ]
+
+// Particle shapes drawn as tiny SVGs (colored by --c in cat.css)
+const SHAPES = {
+  heart: '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.6 3 5 6.6 5c2.1 0 3.6 1.2 5.4 3.2C13.8 6.2 15.3 5 17.4 5 21 5 23 8.6 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg>',
+  sparkle: '<svg viewBox="0 0 24 24"><path d="M12 1c.8 5.6 2.4 7.2 8 8-5.6.8-7.2 2.4-8 8-.8-5.6-2.4-7.2-8-8 5.6-.8 7.2-2.4 8-8z"/></svg>',
+  dot: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></svg>',
+}
+const COLORS = ['#ff8fb1', '#ffb5c8', '#cdb4f6', '#a8e6cf', '#ffd6a5', '#ffe58a']
 
 const pick = (list) => list[Math.floor(Math.random() * list.length)]
 
@@ -113,13 +121,14 @@ export function createCat(root) {
     bubbleTimer = setTimeout(() => bubble.classList.remove('show'), ms)
   }
 
-  // Little emoji particles that float up from the cat
-  function burst(emojis, count) {
+  // Little hearts & sparkles that float up from the cat
+  function burst(shapes, count) {
     const doc = root.ownerDocument // may be the mini window's document
     for (let i = 0; i < count; i++) {
       const el = doc.createElement('span')
       el.className = 'particle'
-      el.textContent = pick(emojis)
+      el.innerHTML = SHAPES[pick(shapes)]
+      el.style.setProperty('--c', pick(COLORS))
       el.style.setProperty('--x', `${(Math.random() - 0.5) * 220}px`)
       el.style.setProperty('--y', `${-90 - Math.random() * 110}px`)
       el.style.setProperty('--r', `${(Math.random() - 0.5) * 80}deg`)
@@ -140,15 +149,15 @@ export function createCat(root) {
 
   function celebrate(big = false) {
     mood('is-celebrating', big ? 5200 : 4000)
-    say(big ? 'ALL DONE!!! 🏆' : pick(['YAY!! 🎉', 'u did it!!!', 'best human ever!', 'WOOHOO 💖']), 3600)
-    burst(['💖', '💗', '✨', '⭐', '🐾', '🎉'], big ? 28 : 18)
+    say(big ? 'ALL DONE!!!' : pick(['YAY!!', 'u did it!!!', 'best human ever!', 'WOOHOO']), 3600)
+    burst(['heart', 'heart', 'sparkle', 'dot'], big ? 28 : 18)
   }
 
   function pet() {
     if (root.classList.contains('is-celebrating')) return
     mood('is-petting', 900)
-    say(pick(['purrr~', 'mrrp!', 'hehe 💕', 'more pets pls']), 1600)
-    burst(['💕', '💗'], 3)
+    say(pick(['purrr~', 'mrrp!', 'hehe', 'more pets pls']), 1600)
+    burst(['heart'], 3)
   }
 
   root.addEventListener('click', pet)

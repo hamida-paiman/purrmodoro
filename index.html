@@ -20,9 +20,9 @@
       <header class="topbar">
         <h1 class="logo">Purr<span>modoro</span></h1>
         <div class="top-actions">
-          <button id="mute-btn" class="icon-btn" type="button" title="Sound on/off">🔔</button>
-          <button id="theme-btn" class="icon-btn" type="button" title="Day / night">🌙</button>
-          <button id="mini-btn" class="icon-btn" type="button" title="Mini window (stays on top)">🪟</button>
+          <button id="mute-btn" class="icon-btn" type="button" title="Sound on/off"></button>
+          <button id="theme-btn" class="icon-btn" type="button" title="Day / night"></button>
+          <button id="mini-btn" class="icon-btn" type="button" title="Mini window (stays on top)"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><rect class="solid" x="12" y="11.5" width="7" height="5.5" rx="1.5"/></svg></button>
         </div>
       </header>
 
@@ -36,14 +36,14 @@
             <div id="label" class="label">Ready when you are~</div>
             <div class="progress">
               <div id="progress-fill" class="progress-fill"></div>
-              <div id="yarn" class="yarn">🧶</div>
+              <div id="yarn" class="yarn"></div>
             </div>
           </div>
 
           <div class="controls">
-            <button id="reset-btn" class="btn ghost" type="button" title="Restart this session">↺</button>
+            <button id="reset-btn" class="btn ghost" type="button" title="Restart this session"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5"/><path d="M3.5 3.5v5h5"/></svg></button>
             <button id="start-btn" class="btn primary" type="button">Start</button>
-            <button id="skip-btn" class="btn ghost" type="button" title="Skip to next">⏭</button>
+            <button id="skip-btn" class="btn ghost" type="button" title="Skip to next"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path class="solid" d="M5 5.5v13l10-6.5z"/><path d="M19 5v14"/></svg></button>
           </div>
         </section>
       </div>
@@ -58,8 +58,8 @@
           <input name="name" class="field name" placeholder="What are we doing?" maxlength="40" />
           <input name="minutes" class="field mins" type="number" min="1" max="240" value="25" aria-label="Minutes" />
           <select name="type" class="field type" aria-label="Session type">
-            <option value="focus">📚 focus</option>
-            <option value="break">🍵 break</option>
+            <option value="focus">focus</option>
+            <option value="break">break</option>
           </select>
           <button class="btn small" type="submit">Add</button>
         </form>
@@ -82,7 +82,7 @@
       <section class="card stats">
         <div class="stat"><b id="stat-today">0</b><span>sessions today</span></div>
         <div class="stat"><b id="stat-minutes">0</b><span>focus mins today</span></div>
-        <div class="stat"><b id="stat-streak">0</b><span>day streak 🔥</span></div>
+        <div class="stat"><b id="stat-streak">0</b><span>day streak</span></div>
       </section>
 
       <section class="card coats">
@@ -94,7 +94,7 @@
         <button class="coat" type="button" data-coat="calico" title="Calico"></button>
       </section>
 
-      <footer class="footer">made with 💗 and lots of naps</footer>
+      <footer class="footer">made with love and lots of naps</footer>
     </main>
 
     <div id="toast" class="toast" role="status"></div>

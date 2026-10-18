@@ -59,13 +59,13 @@ function advance() {
 function start() {
   clearTimeout(autoStartTimer)
   if (!S.currentSession()) {
-    toast('Add a session first! ✏️')
+    toast('Add a session first!')
     return
   }
   const fresh = timer.getRemaining() === timer.total
   timer.start()
   persistTimer()
-  if (fresh) cat.say(S.currentSession().type === 'focus' ? "let's goooo! 💪" : 'nap time~ 😴')
+  if (fresh) cat.say(S.currentSession().type === 'focus' ? "let's goooo!" : 'nap time~')
   render()
 }
 
@@ -78,7 +78,7 @@ timer.addEventListener('tick', ({ detail }) => {
   el.yarn.style.transform = `translate(-50%, -50%) rotate(${progress * 1440}deg)`
   const session = S.currentSession()
   document.title =
-    timer.status === 'running' && session ? `${formatTime(remaining)} 🐱 ${session.name}` : 'Purrmodoro'
+    timer.status === 'running' && session ? `${formatTime(remaining)} · ${session.name}` : 'Purrmodoro'
 })
 
 timer.addEventListener('done', () => {
@@ -92,12 +92,12 @@ timer.addEventListener('done', () => {
     cat.celebrate(isLast)
     playChime(isLast)
     if (!isMiniOpen()) fireConfetti(isLast)
-    notify('Session done! 🎉', `"${session.name}" complete. Kitty is so proud of you!`)
+    notify('Session done!', `"${session.name}" complete. Kitty is so proud of you!`)
   } else {
-    cat.say("break's over! ready? 💪", 3500)
-    cat.burst(['✨', '⭐', '🐾'], 8)
+    cat.say("break's over! ready?", 3500)
+    cat.burst(['sparkle', 'dot'], 8)
     playChime()
-    notify('Break over 🐾', 'Time to get back to it, you got this!')
+    notify('Break over', 'Time to get back to it, you got this!')
   }
 
   if (isLast) {
@@ -111,8 +111,6 @@ timer.addEventListener('done', () => {
 
 // ---------- rendering ----------
 
-const EMOJI = { focus: '📚', break: '🍵' }
-
 function render() {
   const session = S.currentSession()
   const running = timer.status === 'running'
@@ -120,9 +118,9 @@ function render() {
   el.start.textContent = running ? 'Pause' : timer.status === 'paused' ? 'Resume' : 'Start'
   el.start.classList.toggle('running', running)
 
-  if (!session) el.label.textContent = 'Add a session below ✏️'
+  if (!session) el.label.textContent = 'Add a session below'
   else if (timer.status === 'paused') el.label.textContent = 'paused · kitty is waiting'
-  else el.label.textContent = `${EMOJI[session.type]} ${session.name} · ${store.current + 1}/${store.sessions.length}`
+  else el.label.textContent = `${session.name} · ${store.current + 1}/${store.sessions.length}`
 
   cat.setState(running ? (session.type === 'focus' ? 'working' : 'break') : 'idle')
   el.stage.dataset.type = session?.type ?? 'focus'
@@ -141,7 +139,7 @@ function renderList() {
     li.dataset.index = i
     li.innerHTML = `
       <button class="item-main" type="button" data-act="select" title="Jump to this session">
-        <span class="item-emoji">${i < store.current ? '✅' : EMOJI[session.type]}</span>
+        <span class="item-dot"></span>
         <span class="item-name"></span>
         <span class="item-mins">${session.minutes}m</span>
       </button>
@@ -153,7 +151,7 @@ function renderList() {
     li.querySelector('.item-name').textContent = session.name // textContent = safe from HTML injection
     el.list.appendChild(li)
   })
-  if (!store.sessions.length) el.list.innerHTML = '<li class="empty">No sessions yet. Add one above or pick a quick fill 🐾</li>'
+  if (!store.sessions.length) el.list.innerHTML = '<li class="empty">No sessions yet. Add one above or pick a quick fill.</li>'
 }
 
 function renderStats() {
@@ -196,7 +194,7 @@ el.reset.addEventListener('click', () => {
 el.skip.addEventListener('click', () => {
   clearTimeout(autoStartTimer)
   advance()
-  cat.say('skipped! 🐾', 1500)
+  cat.say('skipped!', 1500)
 })
 
 el.list.addEventListener('click', (e) => {
@@ -219,13 +217,13 @@ el.form.addEventListener('submit', (e) => {
   const minutes = Math.min(240, Math.max(1, Math.round(Number(data.get('minutes')) || 25)))
   changeSessions(() => S.addSession(String(data.get('name')), minutes, data.get('type')))
   el.form.elements.name.value = ''
-  cat.say('ooh, added! 📝', 1400)
+  cat.say('ooh, added!', 1400)
 })
 
 document.querySelectorAll('[data-preset]').forEach((button) =>
   button.addEventListener('click', () => {
     changeSessions(() => S.loadPreset(button.dataset.preset))
-    toast(`Loaded ${button.textContent} 🍅`)
+    toast(`Loaded ${button.textContent}`)
   }),
 )
 
@@ -249,9 +247,20 @@ document.addEventListener('keydown', (e) => {
 
 // ---------- settings: sound, theme, coat, mini window ----------
 
+const icon = (inner) => `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`
+const BELL = '<path d="M6 9a6 6 0 0 1 12 0c0 6.5 2.5 8 2.5 8h-17S6 15.5 6 9z"/><path d="M10.2 20.5a2 2 0 0 0 3.6 0"/>'
+const ICONS = {
+  bell: icon(BELL),
+  bellOff: icon(`${BELL}<path d="M3 3l18 18"/>`),
+  moon: icon('<path d="M20.5 13.5A8.5 8.5 0 1 1 10.5 3.5a6.5 6.5 0 0 0 10 10z"/>'),
+  sun: icon(
+    '<circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/>',
+  ),
+}
+
 function applyMute() {
   setMuted(store.muted)
-  el.mute.textContent = store.muted ? '🔕' : '🔔'
+  el.mute.innerHTML = store.muted ? ICONS.bellOff : ICONS.bell
 }
 el.mute.addEventListener('click', () => {
   store.muted = !store.muted
@@ -265,7 +274,7 @@ function applyTheme() {
   if (store.theme) document.documentElement.dataset.theme = store.theme
   else document.documentElement.removeAttribute('data-theme')
   if (store.theme) syncMini('data-theme', store.theme)
-  el.theme.textContent = theme === 'dark' ? '☀️' : '🌙'
+  el.theme.innerHTML = theme === 'dark' ? ICONS.sun : ICONS.moon
 }
 el.theme.addEventListener('click', () => {
   const current = store.theme ?? (systemDark.matches ? 'dark' : 'light')
@@ -294,7 +303,7 @@ el.mini.addEventListener('click', async () => {
     await toggleMini(el.stage, el.home)
   } else {
     document.body.classList.toggle('compact')
-    toast('Tip: in Safari use File → Add to Dock, then make the window tiny 🐾', 4500)
+    toast('Tip: in Safari use File → Add to Dock, then make the window tiny', 4500)
   }
 })
 
@@ -334,4 +343,4 @@ else loadCurrent()
 render()
 
 initAnalytics()
-setTimeout(() => cat.say(timer.status === 'running' ? 'welcome back! 💗' : 'hi hi! 👋', 2200), 600)
+setTimeout(() => cat.say(timer.status === 'running' ? 'welcome back!' : 'hi hi!', 2200), 600)
