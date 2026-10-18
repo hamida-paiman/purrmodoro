@@ -3,11 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cute-desktop-pomodoro</title>
+    <meta name="description" content="A very cute pomodoro timer with a cat who cheers you on." />
+    <meta name="theme-color" content="#ffb5c8" />
+    <title>Purrmodoro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div id="app"></div>
+    <main class="app">
+      <header class="topbar">
+        <h1 class="logo">Purr<span>modoro</span></h1>
+        <div class="top-actions">
+          <button id="mute-btn" class="icon-btn" type="button" title="Sound on/off">🔔</button>
+          <button id="theme-btn" class="icon-btn" type="button" title="Day / night">🌙</button>
+          <button id="mini-btn" class="icon-btn" type="button" title="Mini window (stays on top)">🪟</button>
+        </div>
+      </header>
+
+      <!-- Everything inside #stage moves into the mini window -->
+      <div id="stage-home">
+        <section id="stage" class="stage">
+          <div id="cat" class="cat-root" data-state="idle"></div>
+
+          <div class="timer">
+            <div id="time" class="time">25:00</div>
+            <div id="label" class="label">Ready when you are~</div>
+            <div class="progress">
+              <div id="progress-fill" class="progress-fill"></div>
+              <div id="yarn" class="yarn">🧶</div>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button id="reset-btn" class="btn ghost" type="button" title="Restart this session">↺</button>
+            <button id="start-btn" class="btn primary" type="button">Start</button>
+            <button id="skip-btn" class="btn ghost" type="button" title="Skip to next">⏭</button>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Your sessions</h2>
+          <button id="clear-btn" class="link-btn" type="button">clear</button>
+        </div>
+
+        <form id="add-form" class="add-form" autocomplete="off">
+          <input name="name" class="field name" placeholder="What are we doing?" maxlength="40" />
+          <input name="minutes" class="field mins" type="number" min="1" max="240" value="25" aria-label="Minutes" />
+          <select name="type" class="field type" aria-label="Session type">
+            <option value="focus">📚 focus</option>
+            <option value="break">🍵 break</option>
+          </select>
+          <button class="btn small" type="submit">Add</button>
+        </form>
+
+        <div class="presets">
+          <span>Quick fill:</span>
+          <button class="chip" type="button" data-preset="classic">25 / 5</button>
+          <button class="chip" type="button" data-preset="deep">50 / 10</button>
+          <button class="chip" type="button" data-preset="quick">15 / 3</button>
+        </div>
+
+        <ol id="session-list" class="session-list"></ol>
+
+        <label class="toggle">
+          <input id="autoplay" type="checkbox" />
+          <span>Start the next session automatically</span>
+        </label>
+      </section>
+
+      <section class="card stats">
+        <div class="stat"><b id="stat-today">0</b><span>sessions today</span></div>
+        <div class="stat"><b id="stat-minutes">0</b><span>focus mins today</span></div>
+        <div class="stat"><b id="stat-streak">0</b><span>day streak 🔥</span></div>
+      </section>
+
+      <section class="card coats">
+        <span>Kitty coat:</span>
+        <button class="coat" type="button" data-coat="ginger" title="Ginger"></button>
+        <button class="coat" type="button" data-coat="grey" title="Grey"></button>
+        <button class="coat" type="button" data-coat="black" title="Black"></button>
+        <button class="coat" type="button" data-coat="white" title="White"></button>
+        <button class="coat" type="button" data-coat="calico" title="Calico"></button>
+      </section>
+
+      <footer class="footer">made with 💗 and lots of naps</footer>
+    </main>
+
+    <div id="toast" class="toast" role="status"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

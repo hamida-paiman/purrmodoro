@@ -1,0 +1,408 @@
+/* ---------- coats (picked with the color dots) ---------- */
+:root,
+:root[data-coat='ginger'] {
+  --fur: #ffc48c;
+  --fur-line: #e8975a;
+  --fur-dark: #f2a463;
+  --belly: #fff2e3;
+  --eye: #4a3b4f;
+  --inner-ear: #ffb0c4;
+  --blush: #ff9fb9;
+}
+:root[data-coat='grey'] {
+  --fur: #cdc9de;
+  --fur-line: #9e99b7;
+  --fur-dark: #aca7c4;
+  --belly: #f5f3fb;
+}
+:root[data-coat='black'] {
+  --fur: #4d4659;
+  --fur-line: #2f2a38;
+  --fur-dark: #3d3748;
+  --belly: #6b6379;
+  --eye: #ffd96a;
+  --inner-ear: #d987a6;
+}
+:root[data-coat='white'] {
+  --fur: #fffdfe;
+  --fur-line: #e3d3e6;
+  --belly: #fff1f6;
+}
+:root[data-coat='calico'] {
+  --fur: #fff6ec;
+  --fur-line: #e6c9b0;
+  --belly: #ffffff;
+}
+
+/* ---------- drawing ---------- */
+.cat-root {
+  position: relative;
+  width: 190px;
+  height: 180px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cat-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.cat-svg * {
+  transform-box: fill-box;
+}
+
+.fur {
+  fill: var(--fur);
+  stroke: var(--fur-line);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.tail-line,
+.tail-fill {
+  fill: none;
+  stroke-linecap: round;
+}
+.tail-line {
+  stroke: var(--fur-line);
+  stroke-width: 17;
+}
+.tail-fill {
+  stroke: var(--fur);
+  stroke-width: 11;
+}
+.belly,
+.muzzle {
+  fill: var(--belly);
+}
+.patch {
+  display: none;
+}
+:root[data-coat='calico'] .patch {
+  display: inline;
+}
+.patch-orange {
+  fill: #ffb36b;
+}
+.patch-dark {
+  fill: #4a4458;
+}
+.stripes path {
+  fill: none;
+  stroke: var(--fur-dark);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+:root[data-coat='white'] .stripes,
+:root[data-coat='calico'] .stripes {
+  display: none;
+}
+.ear-in {
+  fill: var(--inner-ear);
+}
+.eye {
+  fill: var(--eye);
+}
+.shine {
+  fill: #fff;
+}
+.eyes-happy path,
+.eyes-sleep path {
+  fill: none;
+  stroke: var(--eye);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+}
+.blush {
+  fill: var(--blush);
+  opacity: 0.6;
+}
+.nose {
+  fill: #ff8fab;
+}
+.mouth {
+  fill: none;
+  stroke: var(--eye);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mouth-open {
+  fill: #e5577f;
+  stroke: var(--eye);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.whiskers path {
+  stroke: var(--fur-line);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.collar {
+  fill: none;
+  stroke: #ff8fb1;
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+.bell {
+  fill: #ffd45e;
+  stroke: #e3ac35;
+  stroke-width: 2;
+}
+.cushion {
+  fill: var(--cushion);
+}
+.cat-shadow {
+  fill: rgba(80, 40, 70, 0.1);
+  transform-origin: center;
+}
+
+/* ---------- which face is showing ---------- */
+.eyes-happy,
+.eyes-sleep,
+.mouth-open {
+  opacity: 0;
+}
+.eyes,
+.mouth,
+.mouth-open {
+  transition: opacity 0.15s;
+}
+
+.cat-root[data-state='break'] .eyes-open { opacity: 0; }
+.cat-root[data-state='break'] .eyes-sleep { opacity: 1; }
+
+.cat-root.is-petting .eyes-open,
+.cat-root.is-celebrating .eyes-open,
+.cat-root.is-petting .eyes-sleep,
+.cat-root.is-celebrating .eyes-sleep { opacity: 0; }
+.cat-root.is-petting .eyes-happy,
+.cat-root.is-celebrating .eyes-happy { opacity: 1; }
+.cat-root.is-celebrating .mouth { opacity: 0; }
+.cat-root.is-celebrating .mouth-open { opacity: 1; }
+
+/* ---------- idle: breathing, blinking, ear twitches ---------- */
+.cat {
+  transform-origin: 50% 100%;
+  animation: breathe 3.6s ease-in-out infinite;
+}
+.cat-head {
+  transform-origin: 50% 85%;
+}
+.tail {
+  transform-origin: 0% 100%;
+  animation: tail-sway 3s ease-in-out infinite;
+}
+.ear-l {
+  transform-origin: 70% 100%;
+  animation: ear-twitch 7s ease-in-out infinite;
+}
+.ear-r {
+  transform-origin: 30% 100%;
+  animation: ear-twitch 9s ease-in-out 2s infinite;
+}
+.eyes-open {
+  transform-origin: center;
+  animation: blink 4.8s infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.015, 1.03); }
+}
+@keyframes tail-sway {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(9deg); }
+}
+@keyframes ear-twitch {
+  0%, 88%, 100% { transform: rotate(0); }
+  91% { transform: rotate(-14deg); }
+  94% { transform: rotate(5deg); }
+}
+@keyframes blink {
+  0%, 93%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+/* ---------- working: happy little hops ---------- */
+.cat-root[data-state='working'] .cat {
+  animation: hop 3.2s ease-in-out infinite;
+}
+.cat-root[data-state='working'] .cat-shadow {
+  animation: hop-shadow 3.2s ease-in-out infinite;
+}
+.cat-root[data-state='working'] .cat-head {
+  animation: head-bop 1.6s ease-in-out infinite;
+}
+.cat-root[data-state='working'] .tail {
+  animation: tail-sway 0.9s ease-in-out infinite;
+}
+
+@keyframes hop {
+  0% { transform: translateY(0) scale(1, 1); }
+  5% { transform: translateY(0) scale(1.1, 0.9); }
+  14% { transform: translateY(-28px) scale(0.95, 1.06); }
+  23% { transform: translateY(0) scale(1.08, 0.92); }
+  28% { transform: translateY(0) scale(1, 1); }
+  33% { transform: translateY(-12px) scale(0.98, 1.03); }
+  40% { transform: translateY(0) scale(1.04, 0.96); }
+  45%, 100% { transform: translateY(0) scale(1, 1); }
+}
+@keyframes hop-shadow {
+  0%, 5%, 23%, 28%, 40%, 100% { transform: scale(1); opacity: 1; }
+  14% { transform: scale(0.65); opacity: 0.5; }
+  33% { transform: scale(0.85); opacity: 0.8; }
+}
+@keyframes head-bop {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+/* ---------- break: loaf nap with z z z ---------- */
+.cat-root[data-state='break'] .cat {
+  animation: nap 4.2s ease-in-out infinite;
+}
+.cat-root[data-state='break'] .cat-head {
+  transform: rotate(7deg) translateY(5px);
+  transition: transform 0.6s;
+}
+.cat-root[data-state='break'] .tail {
+  animation: none;
+  transform: rotate(62deg);
+  transition: transform 0.6s;
+}
+
+@keyframes nap {
+  0%, 100% { transform: translateY(8px) scale(1.06, 0.9); }
+  50% { transform: translateY(7px) scale(1.08, 0.92); }
+}
+
+.zzz {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  pointer-events: none;
+}
+.zzz span {
+  position: absolute;
+  font-weight: 700;
+  color: var(--ink-soft);
+  opacity: 0;
+}
+.cat-root[data-state='break']:not(.is-celebrating) .zzz span {
+  animation: zzz 3s ease-in-out infinite;
+}
+.zzz span:nth-child(1) { font-size: 14px; }
+.zzz span:nth-child(2) { font-size: 18px; animation-delay: 1s !important; }
+.zzz span:nth-child(3) { font-size: 24px; animation-delay: 2s !important; }
+
+@keyframes zzz {
+  0% { transform: translate(0, 10px) rotate(-10deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(26px, -40px) rotate(14deg); opacity: 0; }
+}
+
+/* ---------- celebrate: big spinny jumps ---------- */
+.cat-root.is-celebrating .cat {
+  transform-origin: 50% 60%;
+  animation: party-jump 1.3s ease-in-out 3;
+}
+.cat-root.is-celebrating .cat-shadow {
+  animation: hop-shadow 1.3s ease-in-out 3;
+}
+.cat-root.is-celebrating .tail {
+  animation: tail-sway 0.3s ease-in-out infinite;
+}
+.cat-root.is-celebrating .ear-l,
+.cat-root.is-celebrating .ear-r {
+  animation: ear-twitch 0.6s ease-in-out infinite;
+}
+.cat-root.is-celebrating .cat-head {
+  animation: head-bop 0.4s ease-in-out infinite;
+}
+
+@keyframes party-jump {
+  0% { transform: translateY(0) scale(1) rotate(0); }
+  12% { transform: translateY(0) scale(1.15, 0.85) rotate(0); }
+  38% { transform: translateY(-46px) scale(0.92, 1.1) rotate(180deg); }
+  62% { transform: translateY(0) scale(1.12, 0.88) rotate(360deg); }
+  74% { transform: translateY(-12px) scale(1) rotate(360deg); }
+  86%, 100% { transform: translateY(0) scale(1) rotate(360deg); }
+}
+
+/* ---------- petting: happy squish ---------- */
+.cat-root.is-petting .cat {
+  animation: squish 0.6s ease-in-out;
+}
+@keyframes squish {
+  0%, 100% { transform: scale(1, 1); }
+  30% { transform: scale(1.12, 0.88); }
+  60% { transform: scale(0.95, 1.06); }
+}
+
+/* ---------- speech bubble ---------- */
+.bubble {
+  position: absolute;
+  top: -6px;
+  right: -16px;
+  z-index: 2;
+  max-width: 160px;
+  padding: 6px 12px;
+  border-radius: 16px 16px 16px 4px;
+  background: var(--bubble);
+  box-shadow: 0 4px 12px rgba(150, 90, 130, 0.18);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+  transform: scale(0);
+  transform-origin: bottom left;
+  pointer-events: none;
+}
+.bubble.show {
+  animation: pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes pop-in {
+  from { transform: scale(0) rotate(-8deg); }
+  to { transform: scale(1) rotate(0); }
+}
+
+/* ---------- floating hearts & sparkles ---------- */
+.fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.particle {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  font-size: 20px;
+  opacity: 0;
+  animation: float-up 1.7s ease-out forwards;
+}
+@keyframes float-up {
+  0% { transform: translate(-50%, 0) scale(0.3); opacity: 0; }
+  15% { opacity: 1; }
+  100% {
+    transform: translate(calc(-50% + var(--x)), var(--y)) rotate(var(--r)) scale(var(--s));
+    opacity: 0;
+  }
+}
+
+/* ---------- small windows ---------- */
+@media (max-width: 360px), (max-height: 560px) {
+  .cat-root {
+    width: 136px;
+    height: 128px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cat-root .cat,
+  .cat-root .cat-head,
+  .cat-root .cat-shadow {
+    animation: none !important;
+  }
+}
