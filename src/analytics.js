@@ -19,3 +19,22 @@ export function initAnalytics() {
 export function trackEvent(name) {
   window.goatcounter?.count?.({ path: name, title: name, event: true })
 }
+// Counts each browser once, the first time it opens the app
+export function trackFirstVisit() {
+  try {
+    if (localStorage.getItem('purrmodoro:counted')) return
+  } catch {
+    return
+  }
+  // count.js loads asynchronously, so wait until it's ready (give up after ~15s)
+  let tries = 0
+  const send = () => {
+    if (window.goatcounter?.count) {
+      trackEvent('new-user')
+      localStorage.setItem('purrmodoro:counted', 'yes') // only mark after we actually sent it
+    } else if (++tries < 30) {
+      setTimeout(send, 500)
+    }
+  }
+  setTimeout(send, 500)
+}

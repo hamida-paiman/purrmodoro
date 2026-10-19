@@ -6,7 +6,7 @@ import { createCat } from './cat.js'
 import { fireConfetti } from './celebrate.js'
 import { playChime, playMew, playPop, setMuted, unlockAudio } from './sound.js'
 import { miniSupported, toggleMini, isMiniOpen, syncMini } from './miniWindow.js'
-import { initAnalytics, trackEvent } from './analytics.js'
+import { initAnalytics, trackEvent, trackFirstVisit } from './analytics.js'
 
 const $ = (id) => document.getElementById(id)
 const el = {
@@ -344,3 +344,5 @@ render()
 
 initAnalytics()
 setTimeout(() => cat.say(timer.status === 'running' ? 'welcome back!' : 'hi hi!', 2200), 600)
+
+trackFirstVisit()
